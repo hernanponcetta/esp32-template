@@ -1,0 +1,28 @@
+{
+  "lsp": {
+    "clangd": {
+      "binary": {
+        "path": "/Users/hernan/.espressif/tools/esp-clangd/esp-21.1.3_20260408/esp-clangd/bin/clangd",
+        "arguments": [
+          "--background-index",
+          "--compile-commands-dir=build",
+          "--resource-dir=/Users/hernan/.espressif/tools/esp-clang/esp-21.1.3_20260408/esp-clang/lib/clang/21",
+          "--query-driver=/Users/hernan/.espressif/tools/riscv32-esp-elf/**/bin/riscv32-esp-elf-gcc,/Users/hernan/.espressif/tools/xtensa-esp-elf/**/bin/xtensa-esp-elf-gcc"
+        ]
+      }
+    }
+  },
+  "languages": {
+    "C": {
+      "tab_size": 4
+    },
+    "C++": {
+      "tab_size": 4
+    }
+  },
+  "file_scan_exclusions": [
+    "build",
+    "managed_components",
+    "dependencies.lock"
+  ]
+}

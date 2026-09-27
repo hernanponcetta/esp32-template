@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Open the serial monitor on the first detected ESP32 USB port.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+detect_port() {
+    local port
+    port="$(ls /dev/tty.usbmodem* /dev/tty.usbserial* 2>/dev/null | head -1 || true)"
+    if [ -z "$port" ]; then
+        echo "error: no ESP32 serial port found (/dev/tty.usbmodem* or /dev/tty.usbserial*)" >&2
+        exit 1
+    fi
+    echo "$port"
+}
+
+PORT="${IDF_PORT:-$(detect_port)}"
+echo "Using port: ${PORT}"
+exec "${SCRIPT_DIR}/idf" -p "${PORT}" monitor

@@ -1,0 +1,36 @@
+[
+  {
+    "label": "idf: build",
+    "command": "./scripts/idf",
+    "args": ["build"],
+    "reveal": "always"
+  },
+  {
+    "label": "idf: clean (fullclean)",
+    "command": "./scripts/idf",
+    "args": ["fullclean"],
+    "reveal": "always"
+  },
+  {
+    "label": "idf: flash",
+    "command": "./scripts/idf-flash",
+    "reveal": "always"
+  },
+  {
+    "label": "idf: monitor",
+    "command": "./scripts/idf-monitor",
+    "reveal": "always"
+  },
+  {
+    "label": "idf: menuconfig",
+    "command": "./scripts/idf",
+    "args": ["menuconfig"],
+    "reveal": "always"
+  },
+  {
+    "label": "idf: size",
+    "command": "./scripts/idf",
+    "args": ["size"],
+    "reveal": "always"
+  }
+]

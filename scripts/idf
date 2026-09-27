@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Run ESP-IDF commands inside the active eim-managed environment.
+# Usage: ./scripts/idf <idf.py args...>
+set -euo pipefail
+
+IDF_VERSION="${IDF_VERSION:-6.1}"
+# Extract major.minor only (6.1.0 → 6.1, 6.1 → 6.1)
+if [[ "$IDF_VERSION" =~ ^([0-9]+\.[0-9]+) ]]; then
+    IDF_MAJOR_MINOR="${BASH_REMATCH[1]}"
+else
+    IDF_MAJOR_MINOR="$IDF_VERSION"
+fi
+ACTIVATE="${HOME}/.espressif/tools/activate_idf_v${IDF_MAJOR_MINOR}.sh"
+
+if [ ! -f "${ACTIVATE}" ]; then
+    echo "error: eim activation script not found: ${ACTIVATE}" >&2
+    echo "       Install ESP-IDF ${IDF_VERSION} with eim first." >&2
+    exit 1
+fi
+
+exec bash -c '
+    . "$1" >/dev/null 2>&1
+    shift
+    exec "$IDF_PYTHON_ENV_PATH/bin/python" "$IDF_PATH/tools/idf.py" "$@"
+' bash "${ACTIVATE}" "$@"

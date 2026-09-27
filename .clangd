@@ -1,0 +1,32 @@
+# ESP-IDF injects GCC-only codegen flags into every compile_commands.json entry.
+# clangd's driver rejects them (err_drv_unknown_argument, surfaced as
+# "Unknown argument: '-fno-malloc-dce'"). They are all pure optimization flags
+# with no effect on the parse, so drop them for clangd only - the real build
+# (riscv32-esp-elf-gcc) still uses them.
+#
+# Unrecognized flags are removed literally, one argv token each, so these
+# cannot swallow an adjacent argument. If a future ESP-IDF release adds a new
+# GCC-only flag, add it here.
+CompileFlags:
+  Remove:
+    - -fno-shrink-wrap
+    - -fstrict-volatile-bitfields
+    - -fno-tree-switch-conversion
+    - -fzero-init-padding-bits=all
+    - -fno-malloc-dce
+
+# clangd's Include Cleaner flags ESP-IDF prerequisite/umbrella headers as unused:
+# every symbol they provide is actually *defined* in a header they include, so
+# nothing gets attributed to them "directly".
+#
+# freertos/FreeRTOS.h is mandatory - freertos/task.h hard-errors without it:
+#   FreeRTOS-Kernel/include/freertos/task.h:37
+#     #error "include FreeRTOS.h must appear in source files before include task.h"
+# clangd's suggested "remove #include directive" fix therefore breaks the build.
+# Upstream bug (still open): https://github.com/clangd/clangd/issues/1913
+#
+# Patterns are right-anchored suffix matches against the resolved header path.
+Diagnostics:
+  Includes:
+    IgnoreHeader:
+      - freertos/FreeRTOS\.h
