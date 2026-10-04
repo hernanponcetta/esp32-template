@@ -14,10 +14,10 @@
   },
   "languages": {
     "C": {
-      "tab_size": 4
+      "tab_size": 2
     },
     "C++": {
-      "tab_size": 4
+      "tab_size": 2
     }
   },
   "file_scan_exclusions": [
